@@ -1,0 +1,1 @@
+![Image Description](media/visualization_clean_up_agent.jpg)
