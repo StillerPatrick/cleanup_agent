@@ -12,7 +12,6 @@ def move_file(source: str, destination: str) -> str:
     :param destination: The path where the file should be moved.
     :return: A message indicating the result of the operation.
     """
-    import os
     try:
         os.rename(source, destination)
         return f"File moved from {source} to {destination}"

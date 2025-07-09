@@ -12,7 +12,7 @@ sse_mcp_client = MCPClient(lambda: sse_client("http://localhost:3000/sse"))
 # Create an Ollama model instance
 ollama_model = OllamaModel(
     host="http://localhost:11434",  # Ollama server address
-    model_id="gemma3n:e4b"          # Specify which model to use
+    model_id="qwen3:8b"          # Specify which model to use
 )
 
 # Define a focused system prompt for file operations
@@ -28,12 +28,20 @@ You have access to the following tools:
 Guidelines:
 - Maintain a clear and consistent directory structure.
 - Group files based on type, purpose, or naming patterns.
+- Use descriptive names for directories to reflect their contents.
 - Avoid data loss by ensuring files are only moved, never deleted.
 - Always confirm your actions after using a tool, and include the full file paths in your confirmations.
 
 Focus on automation-friendly structure and clarity. Your task is not to edit file contents, only to organize the file system.
 """
-
+print("""                                                                                                  
+                                                                                               
+ ,-----.,--.                       ,--. ,--.             ,---.                          ,--.   
+'  .--./|  | ,---.  ,--,--.,--,--, |  | |  | ,---.      /  O  \  ,---.  ,---. ,--,--, ,-'  '-. 
+|  |    |  || .-. :' ,-.  ||      \|  | |  || .-. |    |  .-.  || .-. || .-. :|      \'-.  .-' 
+'  '--'\|  |\   --.\ '-'  ||  ||  |'  '-'  '| '-' '    |  | |  |' '-' '\   --.|  ||  |  |  |   
+ `-----'`--' `----' `--`--'`--''--' `-----' |  |-'     `--' `--'.`-  /  `----'`--''--'  `--'   
+                                            `--'                `---'                           """)
 # Create an agent with MCP tools
 with sse_mcp_client:
     # Get the tools from the MCP server
@@ -49,7 +57,7 @@ with sse_mcp_client:
     path = None
     
     while not correct_request:
-        path = input("which directory I should clean?")
+        path = input("which directory I should clean? Please enter the full path: \n")
         # check if path exists
         if os.path.isdir(path):
             correct_request = True
