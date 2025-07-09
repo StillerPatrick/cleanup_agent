@@ -6,6 +6,7 @@ The Cleanup Agent is a lightweight tool designed to manage and organize files th
 - 📁 Create Folder
 - 🔄 Move File
 - 🔍 List Files
+  
 🛠️ Architecture
 
 The agent communicates with the MCP Server, which performs file operations.
