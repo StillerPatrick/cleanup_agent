@@ -15,11 +15,11 @@ ollama_model = OllamaModel(
     model_id="qwen3:8b"          # Specify which model to use
 )
 
-# Define a focused system prompt for file operations
-SYSTEM_PROMPT = """You are a cleanup agent responsible for organizing and structuring a specific directory. 
-Your goal is to create a clean, logical, and easy-to-navigate folder structure by grouping related files and 
-placing them into appropriately named directories.
+working_directory = os.getcwd()
 
+
+
+SYSTEM_PROMPT_FS = f"""" Your are a file system management agent.
 You have access to the following tools:
 1. List files in a folder — Use this to inspect the contents of directories.
 2. Move files — Use this to reorganize files into the correct locations.
@@ -30,18 +30,17 @@ Guidelines:
 - Group files based on type, purpose, or naming patterns.
 - Use descriptive names for directories to reflect their contents.
 - Avoid data loss by ensuring files are only moved, never deleted.
-- Always confirm your actions after using a tool, and include the full file paths in your confirmations.
-
-Focus on automation-friendly structure and clarity. Your task is not to edit file contents, only to organize the file system.
+- If no specific directory is specified, use the current working directory as the default location.
+You are currently working in the directory: {working_directory}
 """
-print("""                                                                                                  
-                                                                                               
- ,-----.,--.                       ,--. ,--.             ,---.                          ,--.   
-'  .--./|  | ,---.  ,--,--.,--,--, |  | |  | ,---.      /  O  \  ,---.  ,---. ,--,--, ,-'  '-. 
-|  |    |  || .-. :' ,-.  ||      \|  | |  || .-. |    |  .-.  || .-. || .-. :|      \'-.  .-' 
-'  '--'\|  |\   --.\ '-'  ||  ||  |'  '-'  '| '-' '    |  | |  |' '-' '\   --.|  ||  |  |  |   
- `-----'`--' `----' `--`--'`--''--' `-----' |  |-'     `--' `--'.`-  /  `----'`--''--'  `--'   
-                                            `--'                `---'                           """)
+                                                                                            
+print("""                                                                                           
+ _____ ____       _                    _   
+|  ___/ ___|     / \   __ _  ___ _ __ | |_ 
+| |_  \___ \    / _ \ / _` |/ _ \ '_ \| __|
+|  _|  ___) |  / ___ \ (_| |  __/ | | | |_ 
+|_|   |____/  /_/   \_\__, |\___|_| |_|\__|
+                      |___/                 """)
 # Create an agent with MCP tools
 with sse_mcp_client:
     # Get the tools from the MCP server
@@ -50,19 +49,8 @@ with sse_mcp_client:
     # Create an agent using the ollama model and mcp tools
     agent = Agent(model=ollama_model,
                   tools=tools,
-                  system_prompt=SYSTEM_PROMPT)
-
-    # Use the agent
-    correct_request = False
-    path = None
-    
-    while not correct_request:
-        path = input("which directory I should clean? Please enter the full path: \n")
-        # check if path exists
-        if os.path.isdir(path):
-            correct_request = True
-        else:
-            print("Directory does not exist. Please enter a valid directory path.")
+                  system_prompt=SYSTEM_PROMPT_FS)
 
         
-    agent(f'Clean up the following directory {path}')
+    agent(input('What can I help you with?\n'),
+          max_iterations=10)
