@@ -32,6 +32,8 @@ Guidelines:
 - Avoid data loss by ensuring files are only moved, never deleted.
 - If no specific directory is specified, use the current working directory as the default location.
 You are currently working in the directory: {working_directory}
+
+Keep the thinking process short anr concise, and focus on the task at hand
 """
                                                                                             
 print("""                                                                                           
